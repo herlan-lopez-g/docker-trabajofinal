@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: herlan7/mysql-trabajofinal
+    container_name: mysql-trabajofinal
+    environment:
+      MYSQL_ROOT_PASSWORD: pass123
+      MYSQL_DATABASE: dbproyectofinal
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend
+
+  backend:
+    image: herlan7/docker-trabajofinal-back
+    container_name: backend
+    environment:
+      PORT: 3000
+      DB_DATABASE: dbproyectofinal
+      DB_USER: root
+      DB_PASSWORD: pass123
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DIALECT: mysql
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    entrypoint: [ "npm", "start"]
+    networks:
+      - backend   
+  
+  frontend:
+    image: herlan7/docker-trabajofinal-front
+    container_name: frontend-proyecto
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8383:80"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  mysql_data:
