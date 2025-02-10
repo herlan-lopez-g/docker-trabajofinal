@@ -44,9 +44,21 @@ services:
     networks:
       - backend
 
+  volume-explorer:
+    image: alpine
+    container_name: volume-explorer
+    command: sh
+    stdin_open: true
+    tty: true
+    volumes:
+      - mysql_data:/data
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge
 
 volumes:
   mysql_data:
+
