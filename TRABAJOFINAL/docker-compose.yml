@@ -45,7 +45,7 @@ services:
       - backend
 
   volume-explorer:
-    image: alpine
+    image: herlan7/alpine
     container_name: volume-explorer
     command: sh
     stdin_open: true
